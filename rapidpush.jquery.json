@@ -1,0 +1,28 @@
+{
+  "name": "rapidpush",
+  "version": "1.0.1",
+  "title":  "jQuery RapidPush",
+  "description": "Send notifications to RapidPush.",
+  "author": {
+    "name": "Christian Ackermann",
+    "url": "https://github.com/prdatur"
+  },
+  "maintainers": [
+    {
+      "name": "Christian Ackermann",
+      "url": "https://github.com/prdatur"
+    }
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://raw.github.com/prdatur/jquery-rapidpush/master/MIT-LICENSE.txt"
+    }
+  ],
+  "dependencies": {
+    "jquery": ">=1.0"
+  },
+  "bugs": "https://github.com/prdatur/jquery-rapidpush/issues",
+  "homepage": "https://github.com/prdatur/jquery-rapidpush",
+  "docs": "https://github.com/prdatur/jquery-rapidpush#readme"
+}

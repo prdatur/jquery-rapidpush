@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>jQuery RapidPush example</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
+		<script src="./jquery.rapidpush.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$.rapidpush.get_groups({
+					api_key: 'YOUR-API-KEY',
+					success: function(result) {
+						console.log('Success');
+						for (var i in result.data) {
+							if (!result.data.hasOwnProperty(i)) {
+								continue;
+							}
+							console.log("Got group: "+ result.data[i].group);
+						}
+					},
+					error: function(result) {
+						console.log('Error');
+						console.log(result);
+					}
+				});
+			
+				$.rapidpush.notify({
+					api_key: 'YOUR-API-KEY',
+					title: 'Test title',
+					message: 'Test message',
+					success: function(result) {
+						console.log('Success');
+						console.log(result);
+					},
+					error: function(result) {
+						console.log('Error');
+						console.log(result);
+					}
+				});
+			});
+		</script>
+		
+	</head>
+	<body>
+	</body>
+</html>

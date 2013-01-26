@@ -1,0 +1,10 @@
+{
+  "name": "jquery.cookie",
+  "version": "1.0.0",
+  "main": [
+    "./jquery.rapidpush.js"
+  ],
+  "dependencies": {
+    "jquery": ">=1.0"
+  }
+}
