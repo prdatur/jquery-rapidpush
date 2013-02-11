@@ -1,5 +1,5 @@
 /*!
- * jQuery RapidPush Plugin v1.0.0
+ * jQuery RapidPush Plugin v1.0.1
  * https://github.com/prdatur/jquery-rapidpush
  *
  * Copyright 2013 Christian Ackermann
@@ -14,7 +14,7 @@
 		 * 
 		 * @param array options
 		 *   valid required options:
-		 *     api_key		- The api key which will be used.
+		 *     api_key		- The api key which will be used, multiple seperated by comma
 		 *     title		- The notification title
 		 *     message		- The notification message
 		 *					  
@@ -30,7 +30,9 @@
 		 *     success		- A success callback, the result array will be provided 
 		 *					  as the first parameter (default = null)
 		 *     error		- An error callback, the result array will be provided 
-		 *					  as the first parameter (default = null)
+		 *					  as the first parameter, this will NEVER be called if multiple 
+		 *					  api keys were provided, you have to check the results on the success method
+		 *					  (default = null)
 		 */
 		notify: function (options) {			
 			
@@ -92,13 +94,15 @@
 		 * 
 		 * @param array options
 		 *   valid required options:
-		 *     api_key		- The api key which will be used.
+		 *     api_key		- The api key which will be used, multiple seperated by comma
 		 *					  
 		 *   valid optional options:
 		 *     success		- A success callback, the result array will be provided 
 		 *					  as the first parameter (default = null)
 		 *     error		- An error callback, the result array will be provided 
-		 *					  as the first parameter (default = null)
+		 *					  as the first parameter, this will NEVER be called if multiple 
+		 *					  api keys were provided, you have to check the results on the success method
+		 *					  (default = null)
 		 */
 		get_groups: function(options) {
 			var execute_options = {};
