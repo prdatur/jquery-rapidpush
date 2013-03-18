@@ -1,6 +1,6 @@
 {
   "name": "rapidpush",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "title":  "jQuery RapidPush",
   "description": "Send notifications to RapidPush.",
   "author": {

@@ -10,6 +10,55 @@
 	$.rapidpush = {
 		
 		/**
+		 * Sends a broadcast notification to a channel.
+		 * 
+		 * @param array options
+		 *   valid required options:
+		 *     api_key		- The api key which will be used, multiple seperated by comma
+		 *     title		- The notification title
+		 *     message		- The notification message
+		 *     channel      - The broadcast channel (you must own this channel)
+		 *					  
+		 *   valid optional options:
+		 *     success		- A success callback, the result array will be provided 
+		 *					  as the first parameter (default = null)
+		 *     error		- An error callback, the result array will be provided 
+		 *					  as the first parameter, this will NEVER be called if multiple 
+		 *					  api keys were provided, you have to check the results on the success method
+		 *					  (default = null)
+		 */
+		broadcast: function (options) {
+			
+			var post_params = {};
+			var execute_options = {};
+			
+			// Direct return if we miss mandatory fields.
+			if (check_if_empty(options, 'title') || check_if_empty(options, 'message') || check_if_empty(options, 'api_key') || check_if_empty(options, 'channel')) {
+				return false;
+			}
+		
+			post_params['title'] = options['title'];
+			post_params['message'] = options['message'];
+			post_params['channel'] = options['channel'];
+			
+			// Set success callback.
+			if (!check_if_empty(options, 'success') && jQuery.isFunction(options['success'])) {
+				execute_options['success'] = options['success'];
+			}
+		
+			// Set error callback.
+			if (!check_if_empty(options, 'error') && jQuery.isFunction(options['error'])) {
+				execute_options['error'] = options['error'];
+			}
+		
+			// Set api key.
+			execute_options['api_key'] = options['api_key'];
+			
+			// Process api command
+			execute_request('broadcast', post_params, execute_options);
+		},
+			
+		/**
 		 * Sends a notification.
 		 * 
 		 * @param array options
@@ -34,12 +83,13 @@
 		 *					  api keys were provided, you have to check the results on the success method
 		 *					  (default = null)
 		 */
-		notify: function (options) {			
-			
+		notify: function (options) {
+		
+			var execute_options = {};
 			var post_params = {};
 			
 			// Direct return if we miss mandatory fields.
-			if (options['title'] === undefined || options['title'] === '' || options['title'] === null || options['message'] === undefined || options['message'] === '' || options['message'] === null) {
+			if (check_if_empty(options, 'title') || check_if_empty(options, 'message') || check_if_empty(options, 'api_key')) {
 				return false;
 			}
 		
@@ -47,7 +97,7 @@
 			post_params['message'] = options['message'];
 		
 			// Setup priority.
-			if (options['priority'] === undefined || options['priority'] === null || options['priority'] === '') {
+			if (check_if_empty(options, 'priority')) {
 				post_params['priority'] = 2;
 			}
 			else {
@@ -55,37 +105,34 @@
 			}
 		
 			// Setup category.
-			if (options['category'] === undefined || options['category'] === null || options['category'] === '') {
+			if (check_if_empty(options, 'category')) {
 				post_params['category'] = 'default';
 			}
 		
 			// Setup group.
-			if (options['group'] !== undefined && options['group'] !== null && options['group'] !== '') {
+			if (!check_if_empty(options, 'category')) {
 				post_params['group'] = options['group'];
 			}
 		
 			// Setup if we want to schedule it or not..
-			if (options['schedule_at'] !== undefined && options['schedule_at'] !== null && options['schedule_at'] !== '' && options['schedule_at'].search(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:00$/) !== -1) {
+			if (!check_if_empty(options, 'schedule_at') && options['schedule_at'].search(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:00$/) !== -1) {
 				post_params['schedule_at'] = options['schedule_at'];
 			}
-		
-			var execute_options = {};
 			
 			// Set success callback.
-			if (options['success'] !== undefined && options['success'] !== null && jQuery.isFunction(options['success'])) {
+			if (!check_if_empty(options, 'success') && jQuery.isFunction(options['success'])) {
 				execute_options['success'] = options['success'];
 			}
 		
 			// Set error callback.
-			if (options['error'] !== undefined && options['error'] !== null && jQuery.isFunction(options['error'])) {
+			if (!check_if_empty(options, 'error') && jQuery.isFunction(options['error'])) {
 				execute_options['error'] = options['error'];
 			}
 		
-			// Set custom api key.
-			if (options['api_key'] !== undefined && options['api_key'] !== null && options['api_key'] !== '') {
-				execute_options['api_key'] = options['api_key'];
-			}
+			// Set api key.
+			execute_options['api_key'] = options['api_key'];
 			
+			// Process api command
 			execute_request('notify', post_params, execute_options);
 		},
 	
@@ -107,24 +154,42 @@
 		get_groups: function(options) {
 			var execute_options = {};
 			
+			// Direct return if we miss mandatory fields.
+			if (check_if_empty(options, 'api_key')) {
+				return false;
+			}
+		
 			// Set success callback.
-			if (options['success'] !== undefined && options['success'] !== null && jQuery.isFunction(options['success'])) {
+			if (!check_if_empty(options, 'success') && jQuery.isFunction(options['success'])) {
 				execute_options['success'] = options['success'];
 			}
 		
 			// Set error callback.
-			if (options['error'] !== undefined && options['error'] !== null && jQuery.isFunction(options['error'])) {
+			if (!check_if_empty(options, 'error') && jQuery.isFunction(options['error'])) {
 				execute_options['error'] = options['error'];
 			}
 		
-			// Set custom api key.
-			if (options['api_key'] !== undefined && options['api_key'] !== null && options['api_key'] !== '') {
-				execute_options['api_key'] = options['api_key'];
-			}
+			// Set api key.
+			execute_options['api_key'] = options['api_key'];
 			
+			// Process api command
 			execute_request('get_groups', {}, execute_options);
 		}
 	};
+
+	/**
+	 * Checks if the given key is empty within the given values object.
+	 * 
+	 * @param object values
+	 *   The values where to search.
+	 * @param string key
+	 *   The key to search for.
+	 *   
+	 * @returns boolean true if the given key is empty within the given values, else false.
+	 */
+	var check_if_empty = function(values, key) {
+		return values[key] === undefined || values[key] === '' || values[key] === null;
+	}
 
 	/**
 	 * Executes a API-Request.
